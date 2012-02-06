@@ -6,4 +6,5 @@ Prototype and jQuery is different and not compatible.
 Take a look of ajamdemo.html, that shows how I use patched astman.
 You may want to change a username and secret in line #93 (doLogin) to see which events generates your asterisk. 
 
+PS. I called it astman-jah just for fun. Please keep smiling. :-) 
 
