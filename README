@@ -1,0 +1,9 @@
+This is the astman.js originally written by Mark Spenser from Digium.
+I patched original file to use jQuery not Prototype. 
+I'm using jQuery and jQueryUI as Javascript frameworks to build web GUI applications.
+Prototype and jQuery is different and not compatible. 
+
+Take a look of ajamdemo.html, that shows how I use patched astman.
+You may want to change a username and secret in line #93 (doLogin) to see which events generates your asterisk. 
+
+
