@@ -1,0 +1,69 @@
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="/js/astman-jah.js"></script>
+<link href="../css/astman.css" media="all" rel="Stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+<script>
+	var logins = new Object;
+	var logoffs = new Object;
+	var channels = new Object;
+	var pongs = new Object;
+	var loggedon = -1;
+	
+	var demo = new Object;
+	
+	demo.logins = function(msgs) {
+		response = msgs[0].headers['response'];
+		alert('login result: ' + response);
+		$('#statusbar').text( msgs[0].headers['message'] );
+		if (response !='Error') {
+			astmanEngine.pollEvents();
+		}
+	}
+	
+	function doLogin(username,secret) {
+		$('#statusbar').html("<i>Logging in...</i>");
+		astmanEngine.sendRequest('action=login&username=' + username + "&secret=" + secret, demo.logins);
+	}
+	
+	demo.eventCB  = function(msgs) {
+	var test = ''; 
+  	for (x=0;x<msgs.length;x++) {
+	    eventname = msgs[x].headers['event'];
+	    if (eventname == 'Link' ) { 
+		channel1 = msgs[x].headers['channel1'];
+		channel2 = msgs[x].headers['channel2'];
+		alert(channel2 + " linked with " + channel1 );  	
+	    } 
+      	    if (eventname == 'Hangup') { 
+				channel = msgs[x].headers['channel']; 
+				$('konferenceState').html(channel + " Положил трубку "); 
+		  }	
+      for (y=0;y<msgs[x].names.length;y++) {
+          test = test + "msg "+ (x + 1) + "/" + msgs[x].names[y] + "/" + msgs[x].headers[msgs[x].names[y]] + "<br>";
+      }
+   } 
+	 $('#eventlist').html(test);
+	 $('#statusbar').html("<i>Got " + msgs.length + "events. </i>");
+	 astmanEngine.pollEvents();
+
+	}
+	
+	function localajaminit() {
+		astmanEngine.setURL('/asterisk/rawman');
+		astmanEngine.setEventCallback(demo.eventCB);
+		doLogin('webuser','zee7ae0Ma2ria4sh');	
+	}
+</script>
+
+<title>PearlPBX AJAM Demo</title>
+<body onload="localajaminit()">
+<div id='eventlist'>
+</div>
+<div id="statusbar">
+         <span style="margin-left: 4px;font-weight:bold">&nbsp;</span>
+</div>
+<div id='konferenceState'> 
+
+</div>
+</body>
